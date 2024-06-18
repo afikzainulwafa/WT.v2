@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IMEI Form</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <h1>Select IMEI and Date Range</h1>
+    <form action="/submit" method="POST">
+        <label><input type="checkbox" name="imei" value="350317171460474"> IMEI 350317171460474</label><br>
+        <label><input type="checkbox" name="imei" value="350317171462827"> IMEI 350317171462827</label><br>
+        <label><input type="checkbox" name="imei" value="350317171466729"> IMEI 350317171466729</label><br>
+        <label for="start">Start datetime:</label>
+        <input type="datetime-local" id="start" name="start"><br>
+        <label for="end">End datetime:</label>
+        <input type="datetime-local" id="end" name="end"><br>
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>

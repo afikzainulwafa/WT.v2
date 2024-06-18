@@ -1,0 +1,152 @@
+['350317171460474', '350317171462827', '350317171466729'];
+350317171460474,350317171462827,350317171466729
+
+eyJpZCI6IjM2MWJkYjFmLWRlYjEtNDE1YS05ZjU4LTgyNTg3MDE3NWE3OCIsInVzZXIiOiJzaW5hcm1hcyIsImFsZyI6IkhTMjU2In0.eyJpZCI6IjM2MWJkYjFmLWRlYjEtNDE1YS05ZjU4LTgyNTg3MDE3NWE3OCIsInVzZXIiOiJzaW5hcm1hcyJ9.g7czjUmuk5j_eCE1FHNKGIE1UIithhoT0cHN3rOlICc
+
+
+
+
+
+const axios = require('axios');
+
+let config = {
+  method: 'get',
+  maxBodyLength: Infinity,
+  url: 'https://web-gateway.web.id/device-service/company/device-log?imei=350317171460474,350317171462827,350317171466729&time_start=2024-06-15 06:00:55&time_end=2024-06-15 06:00:59',
+  headers: { 
+    'Authorization': 'Bearer eyJpSDFtNDE1YS05ZjU4LTgyNTg3MDSDFJLSDGLDiJzaW5hcm1hcyIsImFsZyI6IkhTMjU2In0.eyJpZCI6IjM2MWJkYjFmLWRSLFJKDHGFDE1YS05ZjU4SDFNWE3OCIsInVzZXIiOiJzaSFDSFA9.g7czjUmuk5j_eCDSAFICc'
+  }
+};
+
+axios.request(config)
+.then((response) => {
+  console.log(JSON.stringify(response.data));
+})
+.catch((error) => {
+  console.log(error);
+});
+
+{
+  "response": 200,
+  "error": "",
+  "appid": "uzzeet",
+  "svcid": "device-service",
+  "controller": "log",
+  "action": "list",
+  "result": {
+    "count": 5511,
+    "result": [
+      {
+        "imei": "350317171466729",
+        "time": "2024-06-15T07:58:00Z",
+        "sat": 18,
+        "lat": -2.94358,
+        "lon": 104.455615,
+        "alt": 29,
+        "speed": 0,
+        "eventtype": "-",
+        "battery_percent": 76
+      },
+      {
+        "imei": "350317171466729",
+        "time": "2024-06-15T07:58:00Z",
+        "sat": 18,
+        "lat": -2.94358,
+        "lon": 104.455615,
+        "alt": 29,
+        "speed": 0,
+        "eventtype": "-",
+        "battery_percent": 76
+      },
+      {
+        "imei": "350317171460474",
+        "time": "2024-06-15T07:58:00Z",
+        "sat": 15,
+        "lat": -2.9422033,
+        "lon": 104.4537766,
+        "alt": -6,
+        "speed": 1,
+        "eventtype": "-",
+        "battery_percent": 70
+      },
+      {
+        "imei": "350317171460474",
+        "time": "2024-06-15T07:58:00Z",
+        "sat": 15,
+        "lat": -2.9422033,
+        "lon": 104.4537766,
+        "alt": -6,
+        "speed": 1,
+        "eventtype": "-",
+        "battery_percent": 70
+      },
+      {
+        "imei": "350317171462827",
+        "time": "2024-06-15T07:58:01Z",
+        "sat": 21,
+        "lat": -2.9430583,
+        "lon": 104.4562933,
+        "alt": 26,
+        "speed": 0,
+        "eventtype": "-",
+        "battery_percent": 74
+      },
+      {
+        "imei": "350317171462827",
+        "time": "2024-06-15T07:58:01Z",
+        "sat": 21,
+        "lat": -2.9430583,
+        "lon": 104.4562933,
+        "alt": 26,
+        "speed": 0,
+        "eventtype": "-",
+        "battery_percent": 74
+      }
+    ]
+  }
+}
+
+     const imeiData = [
+        { imei: "350317171460474", name: "Mugiran", type: "harvester" },
+        { imei: "350317171466992", name: "Munandar", type: "harvester" },
+        { imei: "350317171462827", name: "Jamal Priuda", type: "harvester" },
+        { imei: "350317171466729", name: "Sutriono Eka Saputra", type: "harvester" },
+        { imei: "350317171467230", name: "Nasruzi", type: "harvester" },
+        { imei: "350424069964201", name: "Desriansyah Eka Putra",type: "harvester" },
+        { imei: "350317171455607", name: "Edi Yansyah", type: "harvester" },
+        { imei: "350424069963732", name: "Surakat", type: "harvester" },
+        { imei: "350317171466414", name: "Sularto", type: "harvester" },
+        { imei: "350317171473667", name: "Shobirin", type: "harvester" },
+        { imei: "350317171467065", name: "Dedi Haryanto", type: "harvester" },
+        { imei: "350424069957874", name: "Oik Kaz Wiliadi", type: "harvester" },
+        { imei: "350317171466588", name: "Ismail", type: "harvester" },
+        { imei: "350424062657638", name: "Sugianto", type: "harvester" },
+        { imei: "350424069963872", name: "Muhammad Syaini", type: "harvester" },
+        { imei: "350317171463031", name: "Wasli", type: "harvester" },
+        { imei: "350317171470804", name: "Slamet R", type: "harvester" },
+        { imei: "350317171475530", name: "Suyono", type: "harvester" },
+        { imei: "350424069957817", name: "Suhri", type: "harvester" },
+        { imei: "350317171473576", name: "Subada", type: "harvester" },
+        { imei: "350424062482490", name: "Roni Suwarno", type: "harvester" },
+
+        { imei: "350424069963708", name: "Suryadi", type: "harvester" },
+        { imei: "350317171474814", name: "Leo Kapisa", type: "harvester" },
+        { imei: "350424069964029", name: "Tri Harjono", type: "harvester" },
+        { imei: "350317171475308", name: "Bambang Susanto", type: "harvester" },
+        { imei: "350317171468121", name: "Mahfudin", type: "harvester" },
+        { imei: "350544500636629", name: "Sukirman", type: "harvester" },
+        { imei: "350317171468469", name: "Komarudin", type: "harvester" },
+        { imei: "350317171475407", name: "Rudini", type: "harvester" },
+        { imei: "350544501851904", name: "Parlan", type: "harvester" },
+        { imei: "350317171460409", name: "Dian Aswari", type: "harvester" },
+        { imei: "350317171450129", name: "Agus Jalaludin Dili", type: "harvester" },
+        { imei: "350424069963807", name: "A.Yani", type: "mandor" },
+        { imei: "350317171466570", name: "Hendry", type: "mandor" },
+        { imei: "350424062650401", name: "B3", type: "mandor" },
+        { imei: "350317171460250", name: "B4", type: "mandor" },
+        { imei: "350317171466356", name: "B5", type: "mandor" },
+        { imei: "350424069957734", name: "B6", type: "mandor" },
+        { imei: "350317171431756", name: "B7", type: "mandor" },
+        { imei: "350317171462819", name: "B8", type: "mandor" },
+        { imei: "350317171451127", name: "B9", type: "mandor" },
+      ];
