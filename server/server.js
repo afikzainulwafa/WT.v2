@@ -3,10 +3,12 @@ const axios = require('axios');
 const path = require('path');
 
 const app = express();
-const port = process.env.PORT || 1236;
+const port = process.env.PORT || 3000;
 
-app.use(express.static(path.join(__dirname, '..', 'public')));
+// Serve static files from the public directory
+app.use(express.static(path.join(__dirname, '../public')));
 
+// API endpoint
 app.get('/api/data', async (req, res) => {
   const { date } = req.query;
   if (!date) {
@@ -29,6 +31,11 @@ app.get('/api/data', async (req, res) => {
     console.error(error);
     res.status(500).json({ error: 'Failed to fetch data' });
   }
+});
+
+// Fallback route to serve index.html for any other routes
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../public', 'index.html'));
 });
 
 app.listen(port, () => {
