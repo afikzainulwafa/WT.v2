@@ -1,247 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Device Tracking Map</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <link rel="stylesheet" href="/style.css" />
-    <style>
-      /* Set the size of the div element that contains the map */
-      #map {
-        height: 600px;
-        width: 100%;
-      }
-      #form-container {
-        margin-top: 20px;
-      }
-    </style>
-  </head>
-  <body>
-    <h2>Select Name and Date Range</h2>
-    <form id="imei-form">
-      <label for="name-select">Select a name:</label>
-      <select id="name-select" name="imei">
-        <!-- Options will be dynamically generated -->
-      </select>
-      <br />
-      <label for="start">Start datetime:</label>
-      <input type="datetime-local" id="start" name="start" /><br />
-      <label for="end">End datetime:</label>
-      <input type="datetime-local" id="end" name="end" /><br />
-      <button type="submit">Submit</button>
-    </form>
-    <button1 id="refresh-map">Refresh Map</button1>
-    <h2>Mapping</h2>
-    <div id="map"></div>
-    <div id="options">
-      <input type="checkbox" id="showPolylines" checked />
-      <label for="showPolylines">Show Polylines</label>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tracking Data Visualization</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.fullscreen/1.5.0/Control.FullScreen.js"></script>
+
+</head>
+<body>
+    <div id="controls">
+        <form id="date-form">
+            <label for="date">Select Date:</label>
+            <input type="date" id="date" name="date" required>
+            <button type="submit">Fetch Data</button>
+        </form>
+        <label>
+            <input type="checkbox" id="showPolylines" checked>
+            
+        </label>
+        <button id="refresh-map">Refresh Map</button>
     </div>
-    <div id="result"></div>
-
-    <!-- Include the Leaflet JavaScript library -->
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <!-- Include Axios library -->
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script>
-      // Sample JSON data
-      const imeiData = [
-        { imei: "350317171460474", name: "Mugiran", type: "harvester" },
-        { imei: "350317171466992", name: "Munandar", type: "harvester" },
-        { imei: "350317171462827", name: "Jamal Priuda", type: "harvester" },
-        { imei: "350317171466729", name: "Sutriono Eka Saputra", type: "harvester" },
-        { imei: "350317171467230", name: "Nasruzi", type: "harvester" },
-        { imei: "350424069964201", name: "Desriansyah Eka Putra",type: "harvester" },
-        { imei: "350317171455607", name: "Edi Yansyah", type: "harvester" },
-        { imei: "350424069963732", name: "Surakat", type: "harvester" },
-        { imei: "350317171466414", name: "Sularto", type: "harvester" },
-        { imei: "350317171473667", name: "Shobirin", type: "harvester" },
-        { imei: "350317171467065", name: "Dedi Haryanto", type: "harvester" },
-        { imei: "350424069957874", name: "Oik Kaz Wiliadi", type: "harvester" },
-        { imei: "350317171466588", name: "Ismail", type: "harvester" },
-        { imei: "350424062657638", name: "Sugianto", type: "harvester" },
-        { imei: "350424069963872", name: "Muhammad Syaini", type: "harvester" },
-        { imei: "350317171463031", name: "Wasli", type: "harvester" },
-        { imei: "350317171470804", name: "Slamet R", type: "harvester" },
-        { imei: "350317171475530", name: "Suyono", type: "harvester" },
-        { imei: "350424069957817", name: "Suhri", type: "harvester" },
-        { imei: "350317171473576", name: "Subada", type: "harvester" },
-        { imei: "350424062482490", name: "Roni Suwarno", type: "harvester" },
-        { imei: "350424069963708", name: "Suryadi", type: "harvester" },
-        { imei: "350317171474814", name: "Leo Kapisa", type: "harvester" },
-        { imei: "350424069964029", name: "Tri Harjono", type: "harvester" },
-        { imei: "350317171475308", name: "Bambang Susanto", type: "harvester" },
-        { imei: "350317171468121", name: "Mahfudin", type: "harvester" },
-        { imei: "350544500636629", name: "Sukirman", type: "harvester" },
-        { imei: "350317171468469", name: "Komarudin", type: "harvester" },
-        { imei: "350317171475407", name: "Rudini", type: "harvester" },
-        { imei: "350544501851904", name: "Parlan", type: "harvester" },
-        { imei: "350317171460409", name: "Dian Aswari", type: "harvester" },
-        { imei: "350317171450129", name: "Agus Jalaludin Dili", type: "harvester" },
-        { imei: "350424069963807", name: "A.Yani", type: "mandor" },
-        { imei: "350317171466570", name: "Hendry", type: "mandor" },
-        { imei: "350424062650401", name: "B3", type: "backup" },
-        { imei: "350317171460250", name: "B4", type: "backup" },
-        { imei: "350317171466356", name: "B5", type: "backup" },
-        { imei: "350424069957734", name: "B6", type: "backup" },
-        { imei: "350317171431756", name: "B7", type: "backup" },
-        { imei: "350317171462819", name: "B8", type: "backup" },
-        { imei: "350317171451127", name: "B9", type: "backup" },
-      ];
-
-      // Populate the standard dropdown with names and IMEIs
-      function populateDropdown() {
-        const select = document.getElementById("name-select");
-        imeiData.forEach((item) => {
-          const option = document.createElement("option");
-          option.value = item.imei;
-          option.text = item.name;
-          select.appendChild(option);
-        });
-      }
-
-      // Function to save form data to localStorage
-      function saveFormData() {
-        const formData = {
-          imei: document.getElementById("name-select").value,
-          start: document.getElementById("start").value,
-          end: document.getElementById("end").value,
-        };
-        localStorage.setItem("formData", JSON.stringify(formData));
-      }
-
-      // Function to load form data from localStorage
-      function loadFormData() {
-        const formData = JSON.parse(localStorage.getItem("formData"));
-        if (formData) {
-          document.getElementById("name-select").value = formData.imei;
-          document.getElementById("start").value = formData.start;
-          document.getElementById("end").value = formData.end;
-        }
-      }
-
-      document.addEventListener("DOMContentLoaded", function () {
-        populateDropdown();
-        loadFormData();
-
-        document
-          .getElementById("imei-form")
-          .addEventListener("submit", function (event) {
-            event.preventDefault();
-            const formData = new FormData(this);
-            const params = new URLSearchParams(formData);
-
-            saveFormData(); // Save form data before the page refresh
-
-            fetch("/submit", {
-              method: "POST",
-              body: params,
-            })
-              .then((response) => {
-                if (!response.ok) {
-                  return response
-                    .json()
-                    .then((errorInfo) => Promise.reject(errorInfo));
-                }
-                return response.json();
-              })
-              .then((data) => {
-                localStorage.setItem("dataTracking", JSON.stringify(data));
-                document.getElementById("result").innerText = JSON.stringify(
-                  data,
-                  null,
-                  2
-                );
-                window.location.reload(); // Refresh the page
-              })
-              .catch((error) => {
-                document.getElementById("result").innerText =
-                  "Error: " + error.error;
-              });
-          });
-
-        // Event listener for the refresh map button
-        document
-          .getElementById("refresh-map")
-          .addEventListener("click", function () {
-            initMap();
-          });
-
-        function initMap() {
-          // Clear the existing map container
-          document.getElementById("map").innerHTML =
-            "<div id='map' style='height: 600px; width: 100%;'></div>";
-
-          // Create a map object and specify the DOM element for display.
-          const map = L.map("map").setView([-2.94358, 104.455615], 14); // Set default zoom level to 13
-
-          // Add Esri satellite tile layer to the map
-          L.tileLayer(
-            "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-            {
-              attribution:
-                "Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community",
-              maxZoom: 18,
-            }
-          ).addTo(map);
-
-          // Retrieve data from localStorage
-          const storedData = JSON.parse(localStorage.getItem("dataTracking"));
-          const coordinates = storedData.result.result;
-
-          // Group coordinates by IMEI
-          const imeiGroups = coordinates.reduce((groups, coord) => {
-            if (!groups[coord.imei]) {
-              groups[coord.imei] = [];
-            }
-            groups[coord.imei].push([coord.lat, coord.lon]);
-            return groups;
-          }, {});
-
-          // Add polylines to the map with random colors
-          Object.keys(imeiGroups).forEach((imei) => {
-            const color = getRandomColor();
-            L.polyline(imeiGroups[imei], { color })
-              .addTo(map)
-              .bindPopup(`IMEI: ${imei}`);
-          });
-
-          // Function to toggle visibility of polylines
-          function togglePolylines(visible) {
-            Object.values(polylines).forEach((polyline) => {
-              if (visible) {
-                map.addLayer(polyline);
-              } else {
-                map.removeLayer(polyline);
-              }
-            });
-          }
-
-          // Event listener for checkbox change
-          document
-            .getElementById("showPolylines")
-            .addEventListener("change", function () {
-              togglePolylines(this.checked);
-            });
-
-          // Initial display based on checkbox state
-          togglePolylines(document.getElementById("showPolylines").checked);
-        }
-
-        // Generate a random color
-        function getRandomColor() {
-          const letters = "0123456789ABCDEF";
-          let color = "#";
-          for (let i = 0; i < 6; i++) {
-            color += letters[Math.floor(Math.random() * 16)];
-          }
-          return color;
-        }
-
-        // Initialize the map on page load
-        initMap();
-      });
-    </script>
-  </body>
+    <div id="map"></div>
+    <script src="app.js"></script>
+</body>
 </html>
